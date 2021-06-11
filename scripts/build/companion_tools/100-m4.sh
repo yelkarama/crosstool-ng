@@ -63,6 +63,11 @@ do_m4_backend()
             ;;
     esac
 
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
     CT_DoLog EXTRA "Configuring m4"
     CT_DoExecLog CFG \
                      CFLAGS="${cflags}" \
