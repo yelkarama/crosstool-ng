@@ -64,6 +64,11 @@ do_make_backend()
         extra_config+=( --without-guile )
     fi
 
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
     CT_DoLog EXTRA "Configuring make"
     CT_DoExecLog CFG \
                      CFLAGS="${cflags}" \
