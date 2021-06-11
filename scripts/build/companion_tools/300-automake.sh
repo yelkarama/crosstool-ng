@@ -45,7 +45,7 @@ do_automake_backend()
                      --prefix="${prefix}"
 
     CT_DoLog EXTRA "Building automake"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing automake"
     CT_DoExecLog ALL make install
