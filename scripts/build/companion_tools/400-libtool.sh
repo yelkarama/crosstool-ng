@@ -37,6 +37,11 @@ do_libtool_backend()
         eval "${arg// /\\ }"
     done
 
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
     CT_DoLog EXTRA "Configuring libtool"
     CT_DoExecLog CFG \
                      ${CONFIG_SHELL} \
