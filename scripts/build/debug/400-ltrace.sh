@@ -10,6 +10,8 @@ do_debug_ltrace_extract() {
 
 do_debug_ltrace_build() {
     local ltrace_host
+    local cflags="${CT_TARGET_CFLAGS}"
+    local ldflags="${CT_TARGET_LDFLAGS}"
 
     CT_DoStep INFO "Installing ltrace"
 
@@ -17,6 +19,15 @@ do_debug_ltrace_build() {
     CT_DoExecLog ALL cp -av "${CT_SRC_DIR}/ltrace/." \
                             "${CT_BUILD_DIR}/build-ltrace"
     CT_Pushd "${CT_BUILD_DIR}/build-ltrace"
+
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
+    # autoreconf required after patches
+    CT_DoLog DEBUG "Running autoreconf"
+    CT_DoExecLog ALL autoreconf -fvi
 
     CT_DoLog EXTRA "Configuring ltrace"
     CT_DoExecLog CFG        \
