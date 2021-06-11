@@ -48,6 +48,11 @@ do_dtc_backend()
         eval "${arg// /\\ }"
     done
 
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
     # Override PKG_CONFIG: if pkg-config is not installed, DTC's makefile
     # misinterprets the error code and tries to enable YAML support while
     # not linking against libyaml. NO_YAML=1 is sufficient to make the build
@@ -56,6 +61,7 @@ do_dtc_backend()
         CC="${host}-gcc" \
         AR="${host}-ar" \
         PREFIX="${prefix}" \
+        LDFLAGS="${ldflags}" \
         PKG_CONFIG=/bin/true \
         NO_PYTHON=1 \
         NO_YAML=1 \
@@ -77,8 +83,11 @@ do_dtc_backend()
 
     CT_DoExecLog ALL cp -av "${CT_SRC_DIR}/dtc/." .
 
+    # Modify Makefile to only build dtc
+    sed -i 's/install-bin: all/install-bin: dtc/g' Makefile
+
     CT_DoLog EXTRA "Building dtc"
-    CT_DoExecLog ALL make all "${extra_opts[@]}"
+    CT_DoExecLog ALL make dtc "${extra_opts[@]}"
 
     # Only install binaries, we don't support shared libraries in installation
     # directory yet.
