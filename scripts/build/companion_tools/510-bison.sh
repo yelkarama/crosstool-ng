@@ -48,6 +48,11 @@ do_bison_backend()
         eval "${arg// /\\ }"
     done
 
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
     CT_DoLog EXTRA "Configuring bison"
     CT_DoExecLog CFG \
                      CFLAGS="${cflags}" \
