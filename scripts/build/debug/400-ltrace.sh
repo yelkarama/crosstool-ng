@@ -38,7 +38,7 @@ do_debug_ltrace_build() {
         --prefix=/usr
 
     CT_DoLog EXTRA "Building ltrace"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing ltrace"
     CT_DoExecLog ALL make DESTDIR="${CT_DEBUGROOT_DIR}" install

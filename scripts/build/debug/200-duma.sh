@@ -29,7 +29,7 @@ do_debug_duma_build() {
     [ "${CT_DUMA_SO}" = "y" ] || make_args+=( DUMASO= )
 
     CT_DoLog EXTRA "Building D.U.M.A"
-    CT_DoExecLog ALL make "${make_args[@]}" all
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS} "${make_args[@]}" all
     CT_DoLog EXTRA "Installing D.U.M.A"
     CT_DoExecLog ALL make "${make_args[@]}" install
 

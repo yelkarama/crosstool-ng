@@ -80,7 +80,7 @@ do_make_backend()
                      "${extra_config[@]}"
 
     CT_DoLog EXTRA "Building make"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing make"
     CT_DoExecLog ALL make install

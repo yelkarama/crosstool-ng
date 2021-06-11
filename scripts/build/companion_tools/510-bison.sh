@@ -64,7 +64,7 @@ do_bison_backend()
                      "${extra_config[@]}"
 
     CT_DoLog EXTRA "Building bison"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing bison"
     CT_DoExecLog ALL make install

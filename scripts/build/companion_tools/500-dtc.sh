@@ -87,7 +87,7 @@ do_dtc_backend()
     sed -i 's/install-bin: all/install-bin: dtc/g' Makefile
 
     CT_DoLog EXTRA "Building dtc"
-    CT_DoExecLog ALL make dtc "${extra_opts[@]}"
+    CT_DoExecLog ALL make dtc ${CT_JOBSFLAGS} "${extra_opts[@]}"
 
     # Only install binaries, we don't support shared libraries in installation
     # directory yet.

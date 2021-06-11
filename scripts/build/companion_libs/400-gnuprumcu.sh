@@ -89,7 +89,7 @@ do_gnuprumcu_backend() {
         "${extra_config[@]}"
 
     CT_DoLog EXTRA "Building gnuprumcu"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing gnuprumcu"
 
