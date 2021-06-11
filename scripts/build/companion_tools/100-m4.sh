@@ -79,7 +79,7 @@ do_m4_backend()
                      --prefix="${prefix}"
 
     CT_DoLog EXTRA "Building m4"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing m4"
     CT_DoExecLog ALL make install

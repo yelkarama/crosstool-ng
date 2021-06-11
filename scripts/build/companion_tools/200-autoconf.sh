@@ -49,7 +49,7 @@ do_autoconf_backend()
                      --prefix="${prefix}"
 
     CT_DoLog EXTRA "Building autoconf"
-    CT_DoExecLog ALL make
+    CT_DoExecLog ALL make ${CT_JOBSFLAGS}
 
     CT_DoLog EXTRA "Installing autoconf"
     CT_DoExecLog ALL make install
