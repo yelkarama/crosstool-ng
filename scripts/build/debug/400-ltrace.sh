@@ -10,6 +10,8 @@ do_debug_ltrace_extract() {
 
 do_debug_ltrace_build() {
     local ltrace_host
+    local cflags="${CT_TARGET_CFLAGS}"
+    local ldflags="${CT_TARGET_LDFLAGS}"
 
     CT_DoStep INFO "Installing ltrace"
 
@@ -17,6 +19,15 @@ do_debug_ltrace_build() {
     CT_DoExecLog ALL cp -av "${CT_SRC_DIR}/ltrace/." \
                             "${CT_BUILD_DIR}/build-ltrace"
     CT_Pushd "${CT_BUILD_DIR}/build-ltrace"
+
+    # Build static executable if toolchain is static
+    if [ "${CT_STATIC_TOOLCHAIN}" = "y" ]; then
+        ldflags="-static $ldflags"
+    fi
+
+    # autoreconf required after patches
+    CT_DoLog DEBUG "Running autoreconf"
+    CT_DoExecLog ALL autoreconf -fvi
 
     CT_DoLog EXTRA "Configuring ltrace"
     # ltrace-0.5.3 has a unique hand-crafted configure script. Releases
@@ -34,15 +45,20 @@ do_debug_ltrace_build() {
         AR="${CT_TARGET}-ar"            \
         HOST="${ltrace_host}"           \
         HOST_OS="${CT_TARGET_KERNEL}"   \
-        CFLAGS="${CT_ALL_TARGET_CFLAGS}"\
+        CFLAGS="${cflags}"              \
+        LDFLAGS="${ldflags}"            \
         ${CONFIG_SHELL}                 \
         ./configure --prefix=/usr
     else
-        CT_DoExecLog CFG        \
-        ${CONFIG_SHELL}         \
-        ./configure             \
-            --build=${CT_BUILD} \
-            --host=${CT_TARGET} \
+        CT_DoExecLog CFG           \
+        CC="${CT_TARGET}-${CT_CC}" \
+        AR="${CT_TARGET}-ar"       \
+        CFLAGS="${cflags}"         \
+        LDFLAGS="${ldflags}"       \
+        ${CONFIG_SHELL}            \
+        ./configure                \
+            --build=${CT_BUILD}    \
+            --host=${CT_TARGET}    \
             --prefix=/usr
     fi
 
