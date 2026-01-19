@@ -55,13 +55,14 @@ do_bison_backend()
 
     CT_DoLog EXTRA "Configuring bison"
     CT_DoExecLog CFG \
-                     CFLAGS="${cflags}" \
-                     LDFLAGS="${ldflags}" \
-                     ${CONFIG_SHELL} \
-                     "${CT_SRC_DIR}/bison/configure" \
-                     --host="${host}" \
-                     --prefix="${prefix}" \
-                     "${extra_config[@]}"
+                    CFLAGS="${cflags}" \
+                    LDFLAGS="${ldflags}" \
+                    ${CONFIG_SHELL} \
+                    "${CT_SRC_DIR}/bison/configure" \
+                    --host="${host}" \
+                    --prefix="${prefix}" \
+                    --enable-relocatable \
+		            "${extra_config[@]}"
 
     CT_DoLog EXTRA "Building bison"
     CT_DoExecLog ALL make ${CT_JOBSFLAGS}
